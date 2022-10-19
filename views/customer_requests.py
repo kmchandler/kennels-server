@@ -45,7 +45,7 @@ def get_all_customers():
 
 def get_single_customer(id):
     '''
-    this is thje docstring
+    this is the docstring
     '''
     requested_customer = None
 
