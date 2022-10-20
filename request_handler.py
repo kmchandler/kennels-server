@@ -13,7 +13,12 @@ from views import (
     create_animal,
     create_location,
     create_customer,
-    create_employee)
+    create_employee,
+    delete_animal,
+    delete_customer,
+    delete_employee,
+    delete_location
+    )
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -161,6 +166,34 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         return (resource, id)  # This is a tuple
 
+    def do_DELETE(self):
+        '''
+        this is the docstring
+        '''
+        # Set a 204 response code
+        self._set_headers(204)
+
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+        # Delete a single animal from the list
+        if resource == "animals":
+            delete_animal(id)
+
+        # Encode the new animal and send in response
+            self.wfile.write("".encode())
+
+        if resource == "employees":
+            delete_employee(id)
+            self.wfile.write("".encode())
+
+        if resource == "customers":
+            delete_customer(id)
+            self.wfile.write("".encode())
+
+        if resource == "locations":
+            delete_location(id)
+            self.wfile.write("".encode())
 
 # This function is not inside the class. It is the starting
 # point of this application.
