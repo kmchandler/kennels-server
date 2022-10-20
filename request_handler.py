@@ -17,7 +17,11 @@ from views import (
     delete_animal,
     delete_customer,
     delete_employee,
-    delete_location
+    delete_location,
+    update_animal,
+    update_customer,
+    update_employee,
+    update_location
     )
 
 # Here's a class. It inherits from another class.
@@ -193,6 +197,37 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "locations":
             delete_location(id)
+            self.wfile.write("".encode())
+
+    def do_PUT(self):
+        '''
+        this is the docstring
+        '''
+        self._set_headers(204)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url(self.path)
+
+        # Delete a single animal from the list
+        if resource == "animals":
+            update_animal(id, post_body)
+
+        # Encode the new animal and send in response
+        self.wfile.write("".encode())
+
+        if resource == "customers":
+            update_customer(id, post_body)
+            self.wfile.write("".encode())
+
+        if resource == "employees":
+            update_employee(id, post_body)
+            self.wfile.write("".encode())
+
+        if resource == "locations":
+            update_location(id, post_body)
             self.wfile.write("".encode())
 
 # This function is not inside the class. It is the starting
