@@ -14,7 +14,11 @@ from views import (
     create_location,
     create_customer,
     create_employee,
-    delete_animal)
+    delete_animal,
+    delete_customer,
+    delete_employee,
+    delete_location
+    )
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -177,8 +181,19 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_animal(id)
 
         # Encode the new animal and send in response
-        self.wfile.write("".encode())
+            self.wfile.write("".encode())
 
+        if resource == "employees":
+            delete_employee(id)
+            self.wfile.write("".encode())
+
+        if resource == "customers":
+            delete_customer(id)
+            self.wfile.write("".encode())
+
+        if resource == "locations":
+            delete_location(id)
+            self.wfile.write("".encode())
 
 # This function is not inside the class. It is the starting
 # point of this application.
