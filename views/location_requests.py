@@ -64,7 +64,7 @@ def get_all_locations():
         SELECT
             l.id,
             l.name,
-            l.address,
+            l.address
         FROM location l
         """)
 
@@ -92,7 +92,7 @@ def get_single_location(id):
         SELECT
             l.id,
             l.name,
-            l.address,
+            l.address
         FROM location l 
         WHERE l.id = ?
         """, ( id, ))
