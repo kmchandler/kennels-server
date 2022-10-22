@@ -85,7 +85,8 @@ def get_all_employees():
         db_cursor.execute("""
         SELECT
             e.id,
-            e.name
+            e.name,
+            e.location_id
         FROM employee e
         """)
 
@@ -95,7 +96,7 @@ def get_all_employees():
 
         for row in dataset:
 
-            employee = Employee(row['id'], row['name'])
+            employee = Employee(row['id'], row['name'], row['location_id'])
 
             employees.append(employee.__dict__)
 
@@ -112,13 +113,41 @@ def get_single_employee(id):
         db_cursor.execute("""
         SELECT
             l.id,
-            l.name
+            l.name,
+            l.location_id
         FROM employee e
         WHERE e.id = ?
         """, ( id, ))
 
         data = db_cursor.fetchone()
 
-        employee = Employee(data['id'], data['name'])
+        employee = Employee(data['id'], data['name'], data['location_id'])
 
         return json.dumps(employee.__dict__)
+
+def get_employee_by_location(location_id):
+    '''
+    get employee by location
+    '''
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # Write the SQL query to get the information you want
+        db_cursor.execute("""
+        SELECT
+            a.id,
+            a.name,
+            a.location_id
+        FROM animal a
+        WHERE a.location_id = ?
+        """, ( location_id, ))
+
+        employees = []
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            employee = Employee(row['id'], row['name'], row['location_id'])
+            employees.append(employee.__dict__)
+
+    return json.dumps(employees)

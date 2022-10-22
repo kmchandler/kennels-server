@@ -24,7 +24,9 @@ from views import (
     update_employee,
     update_location,
     get_customer_by_email,
-    get_animal_by_location
+    get_animal_by_location,
+    get_employee_by_location,
+    get_animal_by_status
     )
 
 # Here's a class. It inherits from another class.
@@ -105,8 +107,14 @@ class HandleRequests(BaseHTTPRequestHandler):
             if query.get('email') and resource == 'customers':
                 response = get_customer_by_email(query['email'][0])
 
-            elif query.get('location_id') and resource == 'locations':
+            elif query.get('location_id') and resource == 'animals':
                 response = get_animal_by_location(query['location_id'][0])
+
+            elif query.get('location_id') and resource == 'employees':
+                response = get_employee_by_location(query['location_id'][0])
+
+            elif query.get('status') and resource == 'animals':
+                response = get_animal_by_status(query['status'][0])
 
         self.wfile.write(response.encode())
 
