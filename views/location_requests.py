@@ -91,7 +91,7 @@ def get_single_location(id):
         SELECT
             l.id,
             l.address,
-        FROM animal l
+        FROM location l 
         WHERE l.id = ?
         """, ( id, ))
 
