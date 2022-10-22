@@ -105,7 +105,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             if query.get('email') and resource == 'customers':
                 response = get_customer_by_email(query['email'][0])
 
-            elif query.get('location_id') and resource == 'locations':
+            elif query.get('location_id') and resource == 'animals':
                 response = get_animal_by_location(query['location_id'][0])
 
         self.wfile.write(response.encode())
