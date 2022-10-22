@@ -37,24 +37,6 @@ EMPLOYEES = [
     },
 ]
 
-def get_all_employees():
-    '''
-    this is the docstring
-    '''
-    return EMPLOYEES
-
-def get_single_employee(id):
-    '''
-    this is the docstring
-    '''
-    requested_employee = None
-
-    for employee in EMPLOYEES:
-        if employee["id"] == id:
-            requested_employee = employee
-
-    return requested_employee
-
 def create_employee(employee):
     '''
     this is the docstring
@@ -90,3 +72,53 @@ def update_employee(id, new_employee):
         if employee["id"] == id:
             EMPLOYEES[index] = new_employee
             break
+
+def get_all_employees():
+    '''
+    this is the docstring
+    '''
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            e.id,
+            e.name
+        FROM employee e
+        """)
+
+        employees = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+
+            employee = Employee(row['id'], row['name'])
+
+            employees.append(employee.__dict__)
+
+    return json.dumps(employees)
+
+def get_single_employee(id):
+    '''
+    this is the docstring
+    '''
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            l.id,
+            l.name
+        FROM employee e
+        WHERE e.id = ?
+        """, ( id, ))
+
+        data = db_cursor.fetchone()
+
+        employee = Employee(data['id'], data['name'])
+
+        return json.dumps(employee.__dict__)
