@@ -1,3 +1,7 @@
+import sqlite3
+import json
+from models import Location
+
 LOCATIONS = [
     {
         "id": 1,
@@ -10,24 +14,6 @@ LOCATIONS = [
         "address": "209 Emory Drive"
     }
 ]
-
-def get_all_locations():
-    '''
-    this is the docstring
-    '''
-    return LOCATIONS
-
-def get_single_location(id):
-    '''
-    this is the docstring
-    '''
-    requested_location = None
-
-    for location in LOCATIONS:
-        if location["id"] == id:
-            requested_location = location
-
-    return requested_location
 
 def create_location(location):
     '''
@@ -64,3 +50,53 @@ def update_location(id, new_location):
         if location["id"] == id:
             LOCATIONS[index] = new_location
             break
+
+def get_all_locations():
+    '''
+    this is the docstring
+    '''
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            l.id,
+            l.address,
+        FROM location l
+        """)
+
+        locations = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+
+            location = Location(row['id'], row['address'])
+
+            locations.append(location.__dict__)
+
+    return json.dumps(locations)
+
+def get_single_location(id):
+    '''
+    this is the docstring
+    '''
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            l.id,
+            l.address,
+        FROM animal l
+        WHERE l.id = ?
+        """, ( id, ))
+
+        data = db_cursor.fetchone()
+
+        location = Location(data['id'], data['address'])
+
+        return json.dumps(location.__dict__)
