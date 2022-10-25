@@ -88,7 +88,7 @@ SELECT
 	a.status,
 	a.location_id,
 	a.customer_id,
-	c.customer_name
+	c.name customer_name,
 	l.name location_name,
 	l.address location_address
 FROM Animal a
