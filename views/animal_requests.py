@@ -111,11 +111,14 @@ def get_all_animals():
                 a.status,
                 a.location_id,
                 a.customer_id,
+                c.customer_name
                 l.name location_name,
                 l.address location_address
             FROM Animal a
             JOIN Location l
                 ON l.id = a.location_id
+            JOIN Customer c
+                ON. c.id = a.customer_id
         """)
 
         # Initialize an empty list to hold all animal representations
@@ -127,7 +130,7 @@ def get_all_animals():
         # Iterate list of data returned from database
         for row in dataset:
 
-    # Create an animal instance from the current row
+            # Create an animal instance from the current row
             animal = Animal(row['id'], row['name'], row['breed'], row['status'],
                             row['location_id'], row['customer_id'])
 
@@ -139,6 +142,9 @@ def get_all_animals():
 
             # Add the dictionary representation of the animal to the list
             animals.append(animal.__dict__)
+
+    # Use `json` package to properly serialize list as JSON
+    return json.dumps(animals)
 
 def get_single_animal(id):
     '''
