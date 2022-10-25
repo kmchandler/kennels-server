@@ -108,4 +108,4 @@ FROM Employee e
 JOIN Location l
 	ON l.id = e.location_id
 
-SELECT * FROM Animals ORDER BY id DESC;
+SELECT * FROM Animal ORDER BY id DESC;
