@@ -115,10 +115,10 @@ def get_all_animals():
                 l.name location_name,
                 l.address location_address
             FROM Animal a
+            JOIN Customer c
+                ON c.id = a.customer_id
             JOIN Location l
                 ON l.id = a.location_id
-            JOIN Customer c
-                ON. c.id = a.customer_id
         """)
 
         # Initialize an empty list to hold all animal representations
@@ -129,7 +129,6 @@ def get_all_animals():
 
         # Iterate list of data returned from database
         for row in dataset:
-
             # Create an animal instance from the current row
             animal = Animal(row['id'], row['name'], row['breed'], row['status'],
                             row['location_id'], row['customer_id'])

@@ -117,8 +117,7 @@ def get_all_employees():
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-
-            employee = Employee(row['id'], row['name'], row['location_id'])
+            employee = Employee(row['id'], row['employee_name'], row['location_id'])
 
             location = Location(row['id'], row['location_name'], row['location_address'])
 
